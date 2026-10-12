@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class ProductModel {
   final int id;
   final String name;
@@ -6,6 +8,10 @@ class ProductModel {
   final String description;
   final String categoryName;
 
+  // الـ API مش بيرجع ألوان ولا مقاسات، فبنثبتهم للـ UI
+  final List<Color> colors;
+  final List<String> sizes;
+
   const ProductModel({
     required this.id,
     required this.name,
@@ -13,6 +19,8 @@ class ProductModel {
     required this.imageUrl,
     required this.description,
     required this.categoryName,
+    this.colors = const [Colors.black, Colors.blueGrey, Colors.brown],
+    this.sizes = const ['S', 'M', 'L', 'XL'],
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
