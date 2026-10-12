@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../core/dummy_data.dart';
+
+// import '../../../core/dummy_data.dart';
+import '../data/models/product_model.dart';
 import '../../../core/theme.dart';
 import '../../details/screens/product_details_screen.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
+  // final Product product;
+  // غيري النوع:
+  final ProductModel product;
 
   const ProductCard({super.key, required this.product});
 
@@ -16,11 +20,12 @@ class ProductCard extends StatelessWidget {
           context,
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => 
+            pageBuilder: (context, animation, secondaryAnimation) =>
                 ProductDetailsScreen(product: product),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
           ),
         );
       },
@@ -47,12 +52,17 @@ class ProductCard extends StatelessWidget {
                   Hero(
                     tag: 'product-${product.id}',
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(24),
+                      ),
                       child: Image.network(
                         product.imageUrl,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
+                        errorBuilder: (_, __, ___) => const Center(
+                          child: Icon(Icons.broken_image, color: Colors.grey),
+                        ),
                       ),
                     ),
                   ),
