@@ -20,9 +20,14 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _HomeView extends StatelessWidget {
+class _HomeView extends StatefulWidget {
   const _HomeView();
 
+  @override
+  State<_HomeView> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<_HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
