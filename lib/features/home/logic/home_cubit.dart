@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/home_service.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final HomeService _service;
+  final dynamic _service;
   Timer? _debounce;
 
   HomeCubit(this._service) : super(HomeLoading());

@@ -1,6 +1,3 @@
-import '../data/models/category_model.dart';
-import '../data/models/product_model.dart';
-
 abstract class HomeState {}
 
 class HomeLoading extends HomeState {}
@@ -11,8 +8,8 @@ class HomeError extends HomeState {
 }
 
 class HomeSuccess extends HomeState {
-  final List<CategoryModel> categories;
-  final List<ProductModel> products;
+  final List<dynamic> categories;
+  final List<dynamic> products;
   final int selectedIndex; // 0 = All
   final bool isLoadingProducts;
 
@@ -24,7 +21,7 @@ class HomeSuccess extends HomeState {
   });
 
   HomeSuccess copyWith({
-    List<ProductModel>? products,
+    List<dynamic>? products,
     int? selectedIndex,
     bool? isLoadingProducts,
   }) {

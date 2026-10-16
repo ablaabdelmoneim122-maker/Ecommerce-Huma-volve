@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../domain/entities/product_entity.dart';
 
-class ProductModel {
-  final int id;
-  final String name;
-  final double price;
-  final String imageUrl;
-  final String description;
-  final String categoryName;
+class ProductModel extends ProductEntity {
+  final List<Color> _colors;
 
-  // الـ API مش بيرجع ألوان ولا مقاسات، فبنثبتهم للـ UI
-  final List<Color> colors;
-  final List<String> sizes;
+  @override
+  List<Color> get colors => _colors;
 
   const ProductModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.imageUrl,
-    required this.description,
-    required this.categoryName,
-    this.colors = const [Colors.black, Colors.blueGrey, Colors.brown],
-    this.sizes = const ['S', 'M', 'L', 'XL'],
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.imageUrl,
+    required super.description,
+    required super.categoryName,
+    this._colors = const [Colors.black, Colors.blueGrey, Colors.brown],
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -34,7 +28,6 @@ class ProductModel {
     );
   }
 
-  // الـ API أحياناً بيرجع الصور بشكل غريب، فبنفلترها
   static String _firstImage(dynamic images) {
     const fallback = 'https://placehold.co/600x600?text=No+Image';
     if (images is! List || images.isEmpty) return fallback;

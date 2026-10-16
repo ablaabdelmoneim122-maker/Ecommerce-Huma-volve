@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'core/theme.dart';
+import 'core/di/injection_container.dart';
 import 'features/splash/screens/splash_screen.dart';
 
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupDI();
   runApp(const MyApp());
 }
 
@@ -13,10 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'E-Commerce App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

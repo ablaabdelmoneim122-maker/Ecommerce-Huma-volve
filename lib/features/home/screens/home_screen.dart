@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/dummy_data.dart';
 import '../../../core/theme.dart';
-import '../data/home_service.dart';
 import '../logic/home_cubit.dart';
 import '../logic/home_state.dart';
 import '../widgets/category_chip.dart';
@@ -15,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeCubit(HomeService())..loadHome(),
+      create: (context) => HomeCubit(context.read())..loadHome(),
       child: const _HomeView(),
     );
   }
@@ -67,7 +66,12 @@ class _HomeView extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, HomeSuccess state) {
     final cubit = context.read<HomeCubit>();
-    final labels = ['All', ...state.categories.map((c) => c.name)];
+    final labels = [
+      'All',
+        ...state.categories
+          .map((category) => (category as dynamic)?.name)
+          .whereType<String>(),
+    ];
 
     return CustomScrollView(
       slivers: [
