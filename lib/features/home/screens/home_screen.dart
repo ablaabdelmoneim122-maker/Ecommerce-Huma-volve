@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/dummy_data.dart';
+import '../../../core/di/injection_container.dart';
 import '../../../core/theme.dart';
+import '../data/home_service.dart';
 import '../logic/home_cubit.dart';
 import '../logic/home_state.dart';
 import '../widgets/category_chip.dart';
@@ -14,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(context.read())..loadHome(),
+      create: (_) => HomeCubit(sl<HomeService>())..loadHome(),
       child: const _HomeView(),
     );
   }
@@ -28,6 +30,28 @@ class _HomeView extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<_HomeView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final pos = _scrollController.position;
+    if (pos.pixels >= pos.maxScrollExtent - 300) {
+      context.read<HomeCubit>().loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +103,8 @@ class _HomeScreenState extends State<_HomeView> {
     ];
 
     return CustomScrollView(
+      controller: _scrollController,
+
       slivers: [
         SliverToBoxAdapter(
           child: Padding(

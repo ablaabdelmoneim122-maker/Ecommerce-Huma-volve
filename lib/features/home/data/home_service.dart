@@ -1,21 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
 import 'models/category_model.dart';
 import 'models/product_model.dart';
 
 class HomeService {
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.escuelajs.co/api/v1',
-      connectTimeout: const Duration(seconds: 15),
-      receiveTimeout: const Duration(seconds: 15),
-    ),
-  )..interceptors.add(PrettyDioLogger());
+  final Dio _dio;
+
+  HomeService(this._dio);
 
   Future<List<ProductModel>> getProducts({
     int? categoryId,
     String? title,
+    int offset = 0,
   }) async {
     try {
       final path = categoryId == null
@@ -24,7 +19,7 @@ class HomeService {
       final res = await _dio.get(
         path,
         queryParameters: {
-          'offset': 0,
+          'offset': offset,
           'limit': 20,
           if (title != null) 'title': title,
         },

@@ -11,3 +11,4 @@ class GetProductsUseCase {
           {int? categoryId, String? title}) =>
       _repo.getProducts(categoryId: categoryId, title: title);
 }
+

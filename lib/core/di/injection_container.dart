@@ -12,13 +12,17 @@ import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 
 import '../../features/home/data/datasources/home_remote_data_source.dart';
+import '../../features/home/data/home_service.dart';
 import '../../features/home/data/repos/home_repo_impl.dart';
 import '../../features/home/domain/repos/home_repo.dart';
 import '../../features/home/domain/usecases/get_categories_usecase.dart';
 import '../../features/home/domain/usecases/get_products_usecase.dart';
+import '../../features/home/domain/usecases/get_product_by_id_usecase.dart';
+import '../../features/home/logic/product_details_cubit.dart';
 
 
 final sl = GetIt.instance;
+
 
 void setupDI() {
   // Core
@@ -32,7 +36,9 @@ void setupDI() {
     dio.interceptors.addAll([
       InterceptorsWrapper(onRequest: (options, handler) async {
         final token = await sl<TokenStorage>().read();
-        if (token != null) options.headers['Authorization'] = 'Bearer $token';
+        if (token != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
         handler.next(options);
       }),
       PrettyDioLogger(),
@@ -48,8 +54,12 @@ void setupDI() {
   sl.registerFactory(() => AuthCubit(sl(), sl()));
 
   // Home
+  sl.registerLazySingleton(() => HomeService(sl()));
   sl.registerLazySingleton<HomeRemoteDataSource>(() => HomeRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(sl()) as HomeRepo);
+  sl.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(sl()));
   sl.registerLazySingleton(() => GetProductsUseCase(sl()));
   sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+
+  sl.registerLazySingleton(() => GetProductByIdUseCase(sl()));
+  sl.registerFactory(() => ProductDetailsCubit(sl()));
 }
